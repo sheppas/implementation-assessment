@@ -7,8 +7,8 @@ Clone this repo, install dependencies and start the server
 In your command prompt, run
 
     ```
-      $ git clone
-      $ cd
+      $ git clone https://github.com/mikeOAdyen/implementation-assessment.git
+      $ cd implementation-assessment
       $ npm install
     ```
 
