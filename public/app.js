@@ -1,9 +1,9 @@
 const config = {
   clientKey: 'test_CTOT7ZHBDVAHBHIABJ63CUQW7QMVDQFD',
-  merchantAccount: 'MikeOssig',
+  merchantAccount: 'MyTestAccount',
   countryCode: "NL",
   shopperLocale: "en_US",
-  amount: { currency: "EUR", value: 1000, }
+  amount: { currency: "USD", value: 1000 }
 };
 
 const postRequest = async (url, payload) => {
@@ -24,19 +24,17 @@ const postRequest = async (url, payload) => {
   };
 };
 
-const successPage = (`
-  <div id="success">
-    <h1 id="success-message">
-      Success!
-    </h1>
-  </div>
-`)
-
-const showFinalResult = () => {
+const showFinalResult = (response) => {
   const container = document.getElementById("container");
-  console.log(container);
-  container.innerHTML = successPage;
-}
+  container.innerHTML = (`
+    <div id="results">
+      <h1 class="results-message">
+        Result: ${response.resultCode}
+      </h1>
+      <h1 class="results-message"> pspReference: ${response.pspReference} </h1>
+    </div>
+  `);
+};
 
 const createDropinConfig = paymentMethodsResponse => {
   return {
@@ -44,16 +42,14 @@ const createDropinConfig = paymentMethodsResponse => {
     clientKey: config.clientKey,
     merchantAccount: config.merchantAccount,
     locale: config.shopperLocale,
-    removePaymentMethods: ["paypal", "sepadirectdebit", "alipay", "unionpay"],
+    removePaymentMethods: ["paypal", "ideal", "sepadirectdebit", "alipay", "unionpay"],
     environment: "test",
     onSubmit: async (state, dropin) => {
-      console.log('called')
       const response = await postRequest('/makePayment', state.data);
       if (response.action) {
         dropin.handleAction(response.action);
       } else {
-        console.log(response);
-        showFinalResult()
+        showFinalResult(response);
       };
     },
     onAdditionalDetails: async (state, dropin) => {
@@ -61,8 +57,7 @@ const createDropinConfig = paymentMethodsResponse => {
       if (response.action) {
         dropin.handleAction(response.action);
       } else {
-        console.log(response);
-        // showFInalResult(response)
+        showFinalResult(response);
       };
     }
   };

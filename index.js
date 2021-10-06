@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
 
 app.use(express.static(__dirname + '/public'));
 
+// debug this endpoint
 app.post('/getPaymentMethods', (req, res) => {
   const { merchantAccount, countryCode, shopperLocale, amount } = req.body;
   checkout.paymentMethods({
@@ -34,7 +35,7 @@ app.post('/getPaymentMethods', (req, res) => {
     countryCode,
     shopperLocale,
     amount: {
-      currency: amount.curreny,
+      currency: amount.currency,
       value: amount.value
     },
     channel: "Web"
