@@ -2,7 +2,7 @@
 
 ## Objective
 
-This assessment will test your ability to follow documentation to debug and finish a working integraton with Adyen.  You will:
+This assessment will test your ability to follow documentation to debug and finish a working [Drop-in integraton](https://docs.adyen.com/online-payments/web-drop-in/before-5-0-0) with Adyen.  You will:
 
 1. Complete the `/makePayment` endpoint
 2. Complete the `/additionalDetails` endpoint
@@ -11,7 +11,7 @@ This assessment will test your ability to follow documentation to debug and fini
 
 ## Instructions
 
-In `index.js`, you will find an (almost!) working `/getPaymentMethods` endpoint that is built following the instructions found in our [drop-in documentation](https://docs.adyen.com/online-payments/drop-in-web#step-1-get-available-payment-methods).  Utilizing this, as well as our documentation, finish the `/makePayment` and `/additionalDetails` endpoints.
+In `index.js`, you will find an (almost!) working `/getPaymentMethods` endpoint that is built following the instructions found in our [drop-in documentation](https://docs.adyen.com/online-payments/web-drop-in/before-5-0-0#step-1-get-available-payment-methods).  Utilizing this, as well as our documentation, finish the `/makePayment` and `/additionalDetails` endpoints.
 
 Once these endpoints are complete, test to ensure that the integration is working as expected, with only Credit Cards, SEPA, and iDeal being accepted.  You can find test payment information [here](https://docs.adyen.com/development-resources/test-cards/test-card-numbers).
 
