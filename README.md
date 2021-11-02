@@ -13,7 +13,7 @@ This assessment will test your ability to follow documentation to debug and fini
 
 In `index.js`, you will find an (almost!) working `/getPaymentMethods` endpoint that is built following the instructions found in our [drop-in documentation](https://docs.adyen.com/online-payments/web-drop-in/before-5-0-0#step-1-get-available-payment-methods).  Utilizing this, as well as our documentation, finish the `/makePayment` and `/additionalDetails` endpoints.
 
-Once these endpoints are complete, test to ensure that the integration is working as expected, with only Credit Cards, SEPA, and iDeal being accepted.  You can find test payment information [here](https://docs.adyen.com/development-resources/test-cards/test-card-numbers).
+Once these endpoints are complete, test to ensure that the integration is working as expected, with Credit Cards, SEPA, and iDeal showing as options.  You can find test payment information [here](https://docs.adyen.com/development-resources/test-cards/test-card-numbers).
 
 After you have completed each payment, take the pspReference of the successful transaction and put it in the `pspRefs.txt` file.
 
@@ -21,15 +21,7 @@ _Hint: There may be some lingering bugs on the front end (`/public`) that requir
 
 ## Installation
 
-Clone this repo, install dependencies and start the server
-
-In your command prompt, run
-
-    ```
-      $ git clone
-      $ cd
-      $ npm install
-    ```
+This repo already includes the `node_modules` directory, so no installation is needed.
 
 ## Usage
 
@@ -45,7 +37,7 @@ Once you have these items, create a file in the root directory called `.env`. Us
 
 _Note: the format should be `KEY=VALUE` with **NO SPACES** between the `=` and the values._
 
-Now that these items are ready, you can start the application with
+Now that these items are ready, you can start the application by `cd` into this directory and using
 
 ```
 $ npm run start

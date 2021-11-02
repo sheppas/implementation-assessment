@@ -1,3 +1,4 @@
+// This is the drop-in config object.  It is used when initializing an instance of drop-in
 const config = {
   clientKey: 'test_CTOT7ZHBDVAHBHIABJ63CUQW7QMVDQFD',
   merchantAccount: 'MyTestAccount',

@@ -4,6 +4,7 @@ const express = require('express');
 const { Client, Config, CheckoutAPI } = require('@adyen/api-library');
 const { PORT, API_KEY, MERCHANT_ACCOUNT, ENVIRONMENT } = require('./config');
 
+// This is the server-side configuration.  It pulls the information supplied in the .env file to create an instance of the checkout API
 const config = new Config();
 // Set your X-API-KEY with the API key from the Customer Area.
 config.apiKey = API_KEY;
@@ -27,7 +28,7 @@ app.get('/', (req, res) => {
 
 app.use(express.static(__dirname + '/public'));
 
-// debug this endpoint
+// this endpoint is (almost!) working
 app.post('/getPaymentMethods', (req, res) => {
   const { merchantAccount, countryCode, shopperLocale, amount } = req.body;
   checkout.paymentMethods({
@@ -44,12 +45,12 @@ app.post('/getPaymentMethods', (req, res) => {
     .catch(err => res.json({ message: err.message }));
 });
 
-// build this endpoint using the example above, along with our dropin documentation -> https://docs.adyen.com/online-payments/drop-in-web#step-3-make-a-payment
+// build this endpoint using the example above, along with our dropin documentation -> https://docs.adyen.com/online-payments/web-drop-in/integrated-before-5-0-0?tab=codeBlockmethods_request_7#step-3-make-a-payment
 app.post('/makePayment', (req, res) => {
   // Your code here
 });
 
-// build this endpoint as well, using the documentation -> https://docs.adyen.com/online-payments/drop-in-web#step-4-additional-front-end
+// build this endpoint as well, using the documentation -> https://docs.adyen.com/online-payments/web-drop-in/integrated-before-5-0-0?tab=codeBlockmethods_request_7#step-5-additional-payment-details
 app.post('/additionalDetails', async (req, res) => {
   // Your code here
 })
