@@ -42,7 +42,10 @@ app.post('/getPaymentMethods', (req, res) => {
     channel: "Web"
   })
     .then(paymentMethodsResponse => res.json(paymentMethodsResponse))
-    .catch(err => res.json({ message: err.message }));
+    .catch((err) => {
+      res.status(err.statusCode);
+      res.json({ message: err.message });
+    });
 });
 
 // build this endpoint using the example above, along with our dropin documentation -> https://docs.adyen.com/online-payments/web-drop-in/integrated-before-5-0-0?tab=codeBlockmethods_request_7#step-3-make-a-payment
