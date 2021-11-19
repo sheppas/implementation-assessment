@@ -37,6 +37,32 @@ const showFinalResult = (response) => {
   `);
 };
 
+const parseQueryParameter = (qParameterKey) => {
+  let query = window.location.search.substring(1);
+  let vars = query.split('&');
+  for (let i = 0; i < vars.length; i++) {
+      let pair = vars[i].split('=');
+      if (decodeURIComponent(pair[0]) == qParameterKey) {
+          return decodeURIComponent(pair[1])
+      }
+  }
+  console.warn('Query variable %s not found', variable);
+};
+
+const handleRedirect = async () => {
+  if(/redirectResult/.test(document.location.search)){
+    const paymentDetailsResponse = await postRequest('/additionalDetails', {
+      details: {
+        redirectResult: parseQueryParameter('redirectResult')
+      }
+    });
+
+    showFinalResult(paymentDetailsResponse);
+    return true;
+  }
+  return false;
+};
+
 const createDropinConfig = paymentMethodsResponse => {
   return {
     paymentMethodsResponse,
@@ -65,14 +91,17 @@ const createDropinConfig = paymentMethodsResponse => {
 };
 
 window.addEventListener('load', async e => {
-  const paymentMethodsResponse = await postRequest('/getPaymentMethods', {
-    merchantAccount: config.merchantAccount,
-    countryCode: config.countryCode,
-    shopperLocale: config.shopperLocale,
-    amount: config.amount
-  });
 
-  const checkout = new AdyenCheckout(createDropinConfig(paymentMethodsResponse));
+  const isRedirect = await handleRedirect();
+  if(!isRedirect){
+    const paymentMethodsResponse = await postRequest('/getPaymentMethods', {
+      merchantAccount: config.merchantAccount,
+      countryCode: config.countryCode,
+      shopperLocale: config.shopperLocale,
+      amount: config.amount
+    });
 
-  checkout.create('dropin').mount('#dropin-container')
+    const checkout = new AdyenCheckout(createDropinConfig(paymentMethodsResponse));
+    const dropin = checkout.create('dropin').mount('#dropin-container');
+  }
 });
