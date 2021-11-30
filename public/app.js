@@ -1,7 +1,7 @@
 // This is the drop-in config object.  It is used when initializing an instance of drop-in
 const config = {
-  clientKey: 'test_CTOT7ZHBDVAHBHIABJ63CUQW7QMVDQFD',
-  merchantAccount: 'MyTestAccount',
+  clientKey: 'test_G4SOVVPM2FGLPLRFPNT7H6TEAQVQITWS ',
+  merchantAccount: 'AdyenRecruitment_NY1',
   countryCode: "NL",
   shopperLocale: "en_US",
   amount: { currency: "USD", value: 1000 }
