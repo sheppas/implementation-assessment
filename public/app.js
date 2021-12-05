@@ -1,10 +1,10 @@
 // This is the drop-in config object.  It is used when initializing an instance of drop-in
 const config = {
-  clientKey: 'test_G4SOVVPM2FGLPLRFPNT7H6TEAQVQITWS ',
+  clientKey: 'test_G4SOVVPM2FGLPLRFPNT7H6TEAQVQITWS',
   merchantAccount: 'AdyenRecruitment_NY1',
   countryCode: "NL",
   shopperLocale: "en_US",
-  amount: { currency: "USD", value: 1000 }
+  amount: { currency: "EUR", value: 1000 }
 };
 
 const postRequest = async (url, payload) => {
@@ -22,7 +22,7 @@ const postRequest = async (url, payload) => {
     return response.json();
   } catch (err) {
     console.error(err.message);
-  };
+  }
 };
 
 const showFinalResult = (response) => {
@@ -67,25 +67,31 @@ const createDropinConfig = paymentMethodsResponse => {
   return {
     paymentMethodsResponse,
     clientKey: config.clientKey,
-    merchantAccount: config.merchantAccount,
     locale: config.shopperLocale,
-    removePaymentMethods: ["paypal", "ideal", "sepadirectdebit", "alipay", "unionpay"],
     environment: "test",
+    // merchantAccount: config.merchantAccount,
+
+    // removePaymentMethods: ["paypal", "ideal", "sepadirectdebit", "alipay", "unionpay"],
+
     onSubmit: async (state, dropin) => {
-      const response = await postRequest('/makePayment', state.data);
+      const payload = {
+        data: state.data,
+        amount: config.amount
+      }
+      const response = await postRequest('/payments', payload);
       if (response.action) {
         dropin.handleAction(response.action);
       } else {
         showFinalResult(response);
-      };
+      }
     },
     onAdditionalDetails: async (state, dropin) => {
-      const response = await postRequest('/additionalDetails', state.data);
+      const response = await postRequest('/payments/details', state.data);
       if (response.action) {
         dropin.handleAction(response.action);
       } else {
         showFinalResult(response);
-      };
+      }
     }
   };
 };
@@ -94,7 +100,7 @@ window.addEventListener('load', async e => {
 
   const isRedirect = await handleRedirect();
   if(!isRedirect){
-    const paymentMethodsResponse = await postRequest('/getPaymentMethods', {
+    const paymentMethodsResponse = await postRequest('/paymentMethods', {
       merchantAccount: config.merchantAccount,
       countryCode: config.countryCode,
       shopperLocale: config.shopperLocale,
