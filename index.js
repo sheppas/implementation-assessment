@@ -35,7 +35,7 @@ app.use(express.static(__dirname + "/public"));
 // this endpoint is (almost!) working
 app.post("/paymentMethods", (req, res) => {
   const { merchantAccount, countryCode, shopperLocale, amount } = req.body;
-  return checkout
+  checkout
     .paymentMethods({
       merchantAccount,
       countryCode,
@@ -57,17 +57,16 @@ app.post("/paymentMethods", (req, res) => {
 app.post("/payments", (req, res) => {
   const {paymentMethod} = req.body.data
   const id = uuidv4()
-  return checkout
+  checkout
     .payments({
       merchantAccount: config.merchantAccount,
       paymentMethod,
       amount: req.body.amount,
       reference: id,
-      returnUrl: `https://checkoutshopper-test.adyen.com/checkoutshopper/checkoutPaymentReturn?shopperOrder=${id}`,
+      returnUrl: `https://checkoutshopper-test.adyen.com/checkoutshopper/checkoutPaymentReturn`,
     })
     .then((response) => {
-      console.log(response)
-      return res.json(response)})
+      res.json(response)})
     .catch((err) => {
       res.status(err.statusCode);
       res.json({ message: err.message });
@@ -76,7 +75,16 @@ app.post("/payments", (req, res) => {
 
 // build this endpoint as well, using the documentation -> https://docs.adyen.com/online-payments/web-drop-in/integrated-before-5-0-0?tab=codeBlockmethods_request_7#step-5-additional-payment-details
 app.post("/payments/details", async (req, res) => {
-  // Your code here
+  const {details} = req.body;
+  return checkout
+    .paymentMethods({
+      redirectResult: details.redirectResult
+    })
+    .then((response) => res.json(response))
+    .catch((err) => {
+      res.status(err.statusCode);
+      res.json({ message: err.message });
+    });
 });
 
 app.listen(PORT, () => {

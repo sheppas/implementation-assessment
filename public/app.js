@@ -51,7 +51,7 @@ const parseQueryParameter = (qParameterKey) => {
 
 const handleRedirect = async () => {
   if(/redirectResult/.test(document.location.search)){
-    const paymentDetailsResponse = await postRequest('/additionalDetails', {
+    const paymentDetailsResponse = await postRequest('/payments/details', {
       details: {
         redirectResult: parseQueryParameter('redirectResult')
       }
