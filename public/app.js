@@ -1,22 +1,22 @@
 // This is the drop-in config object.  It is used when initializing an instance of drop-in
 const config = {
-  clientKey: 'test_G4SOVVPM2FGLPLRFPNT7H6TEAQVQITWS',
-  merchantAccount: 'AdyenRecruitment_NY1',
+  clientKey: "test_G4SOVVPM2FGLPLRFPNT7H6TEAQVQITWS",
+  merchantAccount: "AdyenRecruitment_NY1",
   countryCode: "NL",
   shopperLocale: "en_US",
-  amount: { currency: "EUR", value: 1000 }
+  amount: { currency: "EUR", value: 1000 },
 };
 
 const postRequest = async (url, payload) => {
   try {
     const response = await fetch(url, {
       url,
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-type': 'application/json'
+        "Content-type": "application/json",
       },
       body: JSON.stringify(payload),
-      json: true
+      json: true,
     });
 
     return response.json();
@@ -27,34 +27,34 @@ const postRequest = async (url, payload) => {
 
 const showFinalResult = (response) => {
   const container = document.getElementById("container");
-  container.innerHTML = (`
+  container.innerHTML = `
     <div id="results">
       <h1 class="results-message">
         Result: ${response.resultCode}
       </h1>
       <h1 class="results-message"> pspReference: ${response.pspReference} </h1>
     </div>
-  `);
+  `;
 };
 
 const parseQueryParameter = (qParameterKey) => {
   let query = window.location.search.substring(1);
-  let vars = query.split('&');
+  let vars = query.split("&");
   for (let i = 0; i < vars.length; i++) {
-      let pair = vars[i].split('=');
-      if (decodeURIComponent(pair[0]) == qParameterKey) {
-          return decodeURIComponent(pair[1])
-      }
+    let pair = vars[i].split("=");
+    if (decodeURIComponent(pair[0]) == qParameterKey) {
+      return decodeURIComponent(pair[1]);
+    }
   }
-  console.warn('Query variable %s not found', variable);
+  console.warn("Query variable %s not found", variable);
 };
 
 const handleRedirect = async () => {
-  if(/redirectResult/.test(document.location.search)){
-    const paymentDetailsResponse = await postRequest('/payments/details', {
+  if (/redirectResult/.test(document.location.search)) {
+    const paymentDetailsResponse = await postRequest("/payments/details", {
       details: {
-        redirectResult: parseQueryParameter('redirectResult')
-      }
+        redirectResult: parseQueryParameter("redirectResult"),
+      },
     });
 
     showFinalResult(paymentDetailsResponse);
@@ -63,7 +63,7 @@ const handleRedirect = async () => {
   return false;
 };
 
-const createDropinConfig = paymentMethodsResponse => {
+const createDropinConfig = (paymentMethodsResponse) => {
   return {
     paymentMethodsResponse,
     clientKey: config.clientKey,
@@ -76,9 +76,9 @@ const createDropinConfig = paymentMethodsResponse => {
     onSubmit: async (state, dropin) => {
       const payload = {
         data: state.data,
-        amount: config.amount
-      }
-      const response = await postRequest('/payments', payload);
+        amount: config.amount,
+      };
+      const response = await postRequest("/payments", payload);
       if (response.action) {
         dropin.handleAction(response.action);
       } else {
@@ -86,28 +86,29 @@ const createDropinConfig = paymentMethodsResponse => {
       }
     },
     onAdditionalDetails: async (state, dropin) => {
-      const response = await postRequest('/payments/details', state.data);
+      const response = await postRequest("/payments/details", state.data);
       if (response.action) {
         dropin.handleAction(response.action);
       } else {
         showFinalResult(response);
       }
-    }
+    },
   };
 };
 
-window.addEventListener('load', async e => {
-
+window.addEventListener("load", async (e) => {
   const isRedirect = await handleRedirect();
-  if(!isRedirect){
-    const paymentMethodsResponse = await postRequest('/paymentMethods', {
+  if (!isRedirect) {
+    const paymentMethodsResponse = await postRequest("/paymentMethods", {
       merchantAccount: config.merchantAccount,
       countryCode: config.countryCode,
       shopperLocale: config.shopperLocale,
-      amount: config.amount
+      amount: config.amount,
     });
 
-    const checkout = new AdyenCheckout(createDropinConfig(paymentMethodsResponse));
-    const dropin = checkout.create('dropin').mount('#dropin-container');
+    const checkout = new AdyenCheckout(
+      createDropinConfig(paymentMethodsResponse)
+    );
+    const dropin = checkout.create("dropin").mount("#dropin-container");
   }
 });
